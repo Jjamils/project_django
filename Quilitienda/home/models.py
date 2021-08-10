@@ -1,40 +1,13 @@
 from django.db import models
-class Comprador (models.Model):
-  documento = models.CharField(max_length = 15, primary_key = True, verbose_name='No. Cedula')
-  nombres = models.CharField(max_length = 60, verbose_name= 'Nombres')
-  apellidos = models.CharField(max_length = 60, verbose_name= 'Apellidos')
-  direccion_envio = models.CharField(max_length = 100, verbose_name= 'Direccion de envio')
-  telefono = models.CharField(max_length = 15, verbose_name= 'Telefonono')
-  email = models.EmailField(verbose_name='Correo')
-
-  def nombre_completo(self):
-    return "{} {}".format(self.nombres, self.apellidos)
-
-  def __str__(self):
-    return self.nombre_completo()
 
 
-class Categoria(models.Model):
-  codigo = models.AutoField(primary_key= True)
-  nombre = models.CharField(max_length= 20, verbose_name= 'Categoria')
-  descripcion = models.CharField(max_length= 50, verbose_name= 'Descripcion de Categoria')
-
+class Usuario_comprador(models.Model):
+  documento = models.CharField(max_length= 15, primary_key= True, verbose_name= 'Cedula')
+  nombre = models.CharField(max_length= 60, verbose_name= 'Nombres y Apellidos')
+  contraseña = models.CharField(max_length= 15, verbose_name= 'Contraseña')
+  
   def __str__(self):
     return self.nombre
-
-
-class Producto (models.Model):
-  codigo_producto = models.AutoField(primary_key = True)
-  item = models.CharField(max_length=30, verbose_name= 'Nombre de prodcto')
-  descripcion = models.CharField(max_length=150, verbose_name= 'Descripcion')
-  precio = models.IntegerField(verbose_name= 'Precio')
-  inventario = [('S', 'Si'), ('N', 'No')
-  ]
-  stock = models.CharField(max_length= 1, choices= inventario, default= 'S')
-  categoria = models.ForeignKey(Categoria, null= False, blank= False, on_delete= models.CASCADE)
-
-  def __str__(self):
-    return self.item
 
 
 class Administrador(models.Model):
@@ -44,6 +17,45 @@ class Administrador(models.Model):
 
   def __str__(self):
     return self.nombre
+
+
+class Categoria(models.Model):
+  codigo = models.AutoField(primary_key= True)
+  nombre = models.CharField(max_length= 30, verbose_name= 'Categoria')
+  descripcion = models.TextField(max_length= 100, verbose_name= 'Descripcion de Categoria')
+
+  def __str__(self):
+    return self.nombre
+
+
+class Comprador (models.Model):
+  documento = models.CharField(max_length = 15, primary_key = True, verbose_name='No. Cedula')
+  nombres = models.CharField(max_length = 60, verbose_name= 'Nombres')
+  apellidos = models.CharField(max_length = 60, verbose_name= 'Apellidos')
+  direccion_envio = models.CharField(max_length = 100, verbose_name= 'Direccion de envio')
+  telefono = models.CharField(max_length = 15, verbose_name= 'Telefonono')
+  email = models.EmailField(verbose_name='Correo')
+  usuario_comprador = models.ForeignKey(Usuario_comprador, null= False, blank= False, on_delete= models.CASCADE)
+
+  def nombre_completo(self):
+    return "{} {}".format(self.nombres, self.apellidos)
+
+  def __str__(self):
+    return self.nombre_completo()
+
+
+class Producto (models.Model):
+  codigo_producto = models.AutoField(primary_key = True)
+  item = models.CharField(max_length=30, verbose_name= 'Nombre de prodcto')
+  descripcion = models.TextField(max_length=300, verbose_name= 'Descripcion')
+  precio = models.IntegerField(verbose_name= 'Precio')
+  inventario = [('S', 'Si'), ('N', 'No')
+  ]
+  stock = models.CharField(max_length= 1, choices= inventario, default= 'S')
+  categoria = models.ForeignKey(Categoria, null= False, blank= False, on_delete= models.CASCADE)
+
+  def __str__(self):
+    return self.item
 
 
 class Pedido(models.Model):
