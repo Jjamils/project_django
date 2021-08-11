@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Usuario_comprador(models.Model):
+  imagen = models.CharField(max_length= 300, null= True, blank= True, verbose_name= 'Foto')
   documento = models.CharField(max_length= 15, primary_key= True, verbose_name= 'Cedula')
   nombre = models.CharField(max_length= 60, verbose_name= 'Nombres y Apellidos')
   contraseña = models.CharField(max_length= 15, verbose_name= 'Contraseña')
@@ -11,6 +12,7 @@ class Usuario_comprador(models.Model):
 
 
 class Administrador(models.Model):
+  imagen = models.CharField(max_length= 300, null= True, blank= False, verbose_name= 'Foto')
   documento = models.CharField(max_length= 15, primary_key= True, verbose_name= 'Cedula')
   nombre = models.CharField(max_length= 60, verbose_name= 'Nombres y Apellidos')
   contraseña = models.CharField(max_length= 15, verbose_name= 'Contraseña')
@@ -34,8 +36,9 @@ class Comprador (models.Model):
   apellidos = models.CharField(max_length = 60, verbose_name= 'Apellidos')
   direccion_envio = models.CharField(max_length = 100, verbose_name= 'Direccion de envio')
   telefono = models.CharField(max_length = 15, verbose_name= 'Telefonono')
-  email = models.EmailField(verbose_name='Correo')
-  usuario_comprador = models.ForeignKey(Usuario_comprador, null= False, blank= False, on_delete= models.CASCADE)
+  email = models.EmailField(verbose_name='Correo electronico')
+  #Cuando ya se igresen valores modifica la foreign key a valor null= False
+  usuario_comprador = models.ForeignKey(Usuario_comprador, null= True, blank= False, on_delete= models.CASCADE)
 
   def nombre_completo(self):
     return "{} {}".format(self.nombres, self.apellidos)
@@ -46,6 +49,7 @@ class Comprador (models.Model):
 
 class Producto (models.Model):
   codigo_producto = models.AutoField(primary_key = True)
+  imagen = models.CharField(max_length= 300, null= True, blank= False, verbose_name= 'Imagen')
   item = models.CharField(max_length=30, verbose_name= 'Nombre de prodcto')
   descripcion = models.TextField(max_length=300, verbose_name= 'Descripcion')
   precio = models.IntegerField(verbose_name= 'Precio')
