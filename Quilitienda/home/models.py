@@ -88,7 +88,7 @@ class Pedido(models.Model):
 
 class Envio(models.Model):
   cod_envio = models.AutoField(primary_key= True)
-  pedido = models.ForeignKey(Pedido, null= False, blank= False, on_delete= models.CASCADE)
+  pedido = models.OnetoOneField(Pedido, null= False, blank= False, on_delete= models.CASCADE)
 
   def __str__(self):
       return self.cod_envio
